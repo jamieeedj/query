@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {useLocation, useNavigate, useSearchParams} from 'react-router-dom';
 import qs from 'qs';
-import {extend, keys} from 'lodash';
+import {extend} from 'lodash';
 import urlJoin from 'url-join';
 import cleanDeep from 'clean-deep';
 
@@ -34,13 +34,35 @@ function useQuery() {
 		return qs.parse(query, options);
 	}
 
+	// the stringify function of the qs package does the opposite
+	// it receives an object as an argument
+	// then it returns a string
+
+	// e.g.
+	// object: {name: 'james'}
+	// const stringified = qs.stringify(object)
+	// returns name=james
+
+	// wont return a value if passed a string
+	// it uses '=' as a separator
+
 	function queryStringify(obj, options) {
 		return qs.stringify(obj, options);
 	}
 
+	// mergeQuery function
+	// this basically extends the existing query and the new query
+
 	function mergeQuery(objQuery) {
 		return extend({}, query, objQuery);
 	}
+
+	// buildQueryURL
+
+	// cleans the passed objQuery
+	// Removes empty objects, arrays, empty strings, NaN, null and undefined values from objects. Does not alter the original object.
+	// stringifies the cleaned query
+	// then uses urlJoin to concat the pathname and the stringified query
 
 	function buildQueryURL(objQuery) {
 		const cleanedQuery = cleanDeep(objQuery);
@@ -59,17 +81,22 @@ function useQuery() {
 	//     return false;
 	//   }
 
+	// pushQuery
+	// this function builds the query, concats it with the pathname and navigates to it
+	// this is useful for removing a specific part of a query
+
 	function pushQuery(objQuery) {
 		const url = buildQueryURL(objQuery);
 		return navigate(url);
 	}
 
+	// updateQuery
+	// this function extends from the existing query with the objQuery passed as an argument
+	// builds, concats and navigates to it
+
 	function updateQuery(objQuery) {
 		let extendedQuery = mergeQuery(objQuery);
-
-		let url = buildQueryURL(extendedQuery);
-
-		return navigate(url);
+		return pushQuery(extendedQuery);
 	}
 
 	return {query, updateQuery, pushQuery, buildQueryURL};
