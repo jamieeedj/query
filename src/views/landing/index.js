@@ -28,22 +28,22 @@ const source = {
 
 function Index() {
 	const {query, updateQuery, pushQuery} = useQuery();
-	const {sectors_group_id} = query || {};
+	// const {sectors_group_id} = query || {};
 
-	function handleChange(selected) {
-		const {value} = selected || {};
-		const _query = omit(query, ['sectors_group_id']);
+	// function handleChange(selected) {
+	// 	const {value} = selected || {};
+	// 	const _query = omit(query, ['sectors_group_id']);
 
-		if (!selected) {
-			pushQuery(_query);
-		}
+	// 	if (!selected) {
+	// 		pushQuery(_query);
+	// 	}
 
-		updateQuery({...query, sectors_group_id: value});
-	}
+	// 	updateQuery({...query, sectors_group_id: value});
+	// }
 
 	return (
 		<div>
-			<SearchFilterInput name='search' placeholder='Search name' />
+			{/* <SearchFilterInput name='search' placeholder='Search name' />
 
 			<SectorSelect
 				source={source}
@@ -52,7 +52,7 @@ function Index() {
 				id='sectors'
 				name='sector_group'
 				placeholder='Select Sector'
-			/>
+			/> */}
 		</div>
 	);
 }
